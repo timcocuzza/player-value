@@ -1,0 +1,1 @@
+v1.0: Observe a single MLB hitters value in a given year based on a variety of metrics with different weights.

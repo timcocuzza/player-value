@@ -3,33 +3,33 @@ import cases as test
 
 means_hitters = {
 
-    "obp": .330,
-    "slg": np.log(.437), #adjust for accuracy
-    "k%": -.24,
-    "wrc+": 100,
-    "risp": .242
+    "OBP": .330,
+    "SLG": np.log(.437), #adjust for accuracy
+    "K%": -.24,
+    "wRC+": 100,
+    "RBI/PA": .13
 
 }
 
 
 sd_hitters = {
 
-    "obp": 0.035,
-    "slg": 0.0995, #min/max considered .995 of area, z-scores found *this is for ln model
-    "k%": .04,
-    "wrc+": 25, #for future, this figure could be improved. not normally distributed
-    "risp": 0.032
+    "OBP": 0.035,
+    "SLG": 0.0995, #min/max considered .995 of area, z-scores found *this is for ln model
+    "K%": .04,
+    "wRC+": 25, #for future, this figure could be improved. not normally distributed
+    "RBI/PA": 0.03
 
 }
 
 
 weights_hitters = { #sum to length of dict
 
-    "obp": 1.4,
-    "slg": 1,
-    "k%": .4,
-    "wrc+": .8,
-    "risp": .6
+    "OBP": 1.4,
+    "SLG": 1,
+    "K%": .4,
+    "wRC+": .8,
+    "RBI/PA": .6
 
 }
 
@@ -42,8 +42,8 @@ perfect_player_modifier = perfect_player_modifier * (sum(weights_hitters.values(
 
 def weigh_hitter_stats(hitter_stats):
 
-    if "slg" in hitter_stats: #modify passed data to fit adj slg model
-        hitter_stats["slg"] = np.log(hitter_stats["slg"])
+    if "SLG" in hitter_stats: #modify passed data to fit adj slg model
+        hitter_stats["SLG"] = np.log(hitter_stats["SLG"])
 
     return {key: ((hitter_stats[key] - means_hitters[key]) / sd_hitters[key]) * weights_hitters[key] for key in hitter_stats if key in means_hitters and key in sd_hitters}
 
@@ -51,19 +51,11 @@ def weigh_hitter_stats(hitter_stats):
 def hitter_value(hitter_stats):
     hv = 0
 
-    mult = 50 / (len(hitter_stats) * perfect_player_modifier)
+    weighted = weigh_hitter_stats(hitter_stats)
 
-    tester = weigh_hitter_stats(hitter_stats)
-    print(tester)
+    mult = 50 / (len(weighted) * perfect_player_modifier)
 
-    for x in tester.values():
+    for x in weighted.values():
         hv += x
     return hv * mult + 50
 
-
-
-print(hitter_value(test.bonds_2001))
-print(hitter_value(test.judge_2024))
-print(hitter_value(test.santander_2024))
-print(hitter_value(test.mean_case))
-print(hitter_value(test.mantle_1957))
