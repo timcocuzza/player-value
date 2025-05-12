@@ -6,7 +6,9 @@ def main():
     print("Welcome!!! Please choose an option \n1. Observe a single hitter's stats \n2. Compare multiple hitter's stats \n(more to come in future)")
     choice = input("Choose an option: ")
     if choice == "1":
-        name, value = single_hitter()
+        player_name = input("Type a players name: ")
+        player_year = int(input("Type a year: "))
+        name, value = single_hitter(player_name, player_year)
         print(f"{name} has a hitter value of {value}")
     if choice == "2":
         comps = comparison()
@@ -15,9 +17,7 @@ def main():
 
 
 
-def single_hitter():
-    player_name = input("Type a players name: ")
-    player_year = int(input("Type a year: "))
+def single_hitter(player_name, player_year):
 
     stats = get_player_stats(player_name, player_year)
     if stats is None:
@@ -37,5 +37,8 @@ def comparison():
             break
 
     return comps
+
+def single_over_time():
+    pass
 
 main()
