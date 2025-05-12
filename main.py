@@ -6,9 +6,12 @@ def main():
     print("Welcome!!! Please choose an option \n1. Observe a single hitter's stats \n2. Compare multiple hitter's stats \n(more to come in future)")
     choice = input("Choose an option: ")
     if choice == "1":
-        print(single_hitter())
+        name, value = single_hitter()
+        print(f"{name} has a hitter value of {value}")
     if choice == "2":
-        comparison()
+        comps = comparison()
+        for item in comps:
+            print(f"{item[0]} has a hitter value of {item[1]}")
 
 
 
@@ -21,7 +24,7 @@ def single_hitter():
         print(f"No stats found for {player_name}.")
         return single_hitter()
     value = hitter_value(stats)
-    return f"{player_name} has a player value of {value}"
+    return player_name, value
 
 def comparison():
     comps = []
@@ -33,7 +36,6 @@ def comparison():
         if cont == "2":
             break
 
-    for item in comps:
-        print(item)
+    return comps
 
 main()
